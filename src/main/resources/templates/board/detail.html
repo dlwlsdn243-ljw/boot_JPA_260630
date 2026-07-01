@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}"
+>
+<div layout:fragment="content" class="container-md">
+    <!--여기가 main-->
+    <h1>[ NO [[${board.bno}]] ] Detail Page</h1>
+    <form action="/board/update" method="post" class="my-5" id="modForm">
+        <input type="hidden" name="bno" th:value="${board.bno}">
+        <div class="mb-3">
+            <label for="t" class="form-label">Title</label>
+            <input type="text" class="form-control" readonly name="title" id="t" th:value="${board.title}">
+        </div>
+        <div class="mb-3">
+            <label for="w" class="form-label">Writer</label>
+            <input type="text" class="form-control" readonly name="writer" id="w" th:value="${board.writer}">
+        </div>
+        <div class="mb-3">
+            <label for="r" class="form-label">regDate</label>
+            <input type="text" class="form-control"  readonly name="regDate" id="r" th:value="${#temporals.format(board.regDate,'yyyy-MM-dd HH:mm:ss')}">
+        </div>
+        <div class="mb-3">
+            <label for="c" class="form-label">Contents</label>
+            <textarea class="form-control" name="content"  id="c" readonly rows="10" cols="10" th:text="${board.content}"></textarea>
+        </div>
+        <a href="#" class="text-decoration-none">
+            <button type="button" id="modBtn" class="btn btn-warning" >modify</button>
+        </a>
+        <a href="#" class="text-decoration-none">
+            <button type="button"  id="delBtn" class="btn btn-primary" >delete</button>
+        </a>
+        <a th:href="@{/board/list}" class="text-decoration-none">
+            <button type="button" id="listBtn" class="btn btn-primary" >list</button>
+        </a>
+
+        <script th:src="@{/js/boardModify.js}"></script>
+    </form>
+</div>
