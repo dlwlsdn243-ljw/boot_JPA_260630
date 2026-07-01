@@ -68,4 +68,24 @@ public class BoardServiceImpl implements BoardService{
         }
         return null;
     }
+
+    @Override
+    public void update(BoardDTO boardDTO) {
+        // update 기능은 없음
+        // update할 Board객체를 잘 만든다음 save()해야함
+        // findById 객체를 가져와서 => 내 객체의 변경값만 수정 => save()요청
+        Optional<Board> optional = boardRepository.findById(boardDTO.getBno());
+        if(optional.isPresent()){
+            Board board = optional.get();
+            board.setTitle(boardDTO.getTitle());
+            board.setContent(boardDTO.getContent());
+            board.setReadCount(board.getReadCount()-1);
+            boardRepository.save(board);
+        }
+    }
+
+    @Override
+    public void remove(Long bno) {
+        boardRepository.deleteById(bno);
+    }
 }

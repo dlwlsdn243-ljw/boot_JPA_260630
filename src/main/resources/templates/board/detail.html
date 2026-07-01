@@ -19,7 +19,7 @@
         </div>
         <div class="mb-3">
             <label for="r" class="form-label">regDate</label>
-            <input type="text" class="form-control"  readonly name="regDate" id="r" th:value="${#temporals.format(board.regDate,'yyyy-MM-dd HH:mm:ss')}">
+            <input type="text" class="form-control"  readonly  id="r" th:value="${#temporals.format(board.regDate,'yyyy-MM-dd HH:mm:ss')}">
         </div>
         <div class="mb-3">
             <label for="c" class="form-label">Contents</label>
@@ -28,8 +28,8 @@
         <a href="#" class="text-decoration-none">
             <button type="button" id="modBtn" class="btn btn-warning" >modify</button>
         </a>
-        <a href="#" class="text-decoration-none">
-            <button type="button"  id="delBtn" class="btn btn-primary" >delete</button>
+        <a th:href="@{/board/remove(bno=${board.bno})}" class="text-decoration-none">
+            <button type="button"  id="delBtn" class="btn btn-secondary" >delete</button>
         </a>
         <a th:href="@{/board/list}" class="text-decoration-none">
             <button type="button" id="listBtn" class="btn btn-primary" >list</button>

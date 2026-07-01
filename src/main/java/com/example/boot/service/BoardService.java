@@ -47,4 +47,8 @@ public interface BoardService {
     List<BoardDTO> getList();
 
     BoardDTO getDetail(Long bno);
+
+    void update(BoardDTO boardDTO);
+
+    void remove(Long bno);
 }

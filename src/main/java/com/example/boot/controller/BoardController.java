@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -47,5 +48,20 @@ public class BoardController {
     public  void  detail(@RequestParam("bno") Long bno, Model model){
         BoardDTO boardDTO = boardService.getDetail(bno);
         model.addAttribute("board", boardDTO);
+    }
+
+    @PostMapping("/update")
+    public  String update(BoardDTO boardDTO, RedirectAttributes redirectAttributes){
+        boardService.update(boardDTO);
+
+        // redirect시 해당 위치로 객체를 보내주는 역할
+        redirectAttributes.addAttribute("bno", boardDTO.getBno());
+        return "redirect:/board/detail";
+    }
+
+    @GetMapping("/remove")
+    public  String remove(@RequestParam("bno") Long bno){
+        boardService.remove(bno);
+        return "redirect:/board/list";
     }
 }
