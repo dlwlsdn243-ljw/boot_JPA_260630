@@ -19,7 +19,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="board:${list}">
+            <tr th:each="board:${ph.list}">
                 <th scope="row">[[${board.bno}]]</th>
                 <td>
                     <a th:href="@{/board/detail(bno=${board.bno})}">[[${board.title}]]</a>
@@ -28,9 +28,31 @@
                 <td>[[${#strings.substring(board.regDate,0,10)}]]</td>
                 <td>[[${board.readCount}]]</td>
             </tr>
-
             </tbody>
         </table>
+
+        <!--paging line-->
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center" >
+                <li class="page-item" th:classappend="${ph.prev eq false ? 'disabled' : ''}">
+                    <a class="page-link" th:href="@{/board/list(pageNo=${ph.startPage}-1)}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+
+                <th:block th:each="i:${#numbers.sequence(ph.startPage, ph.endPage)}" >
+                    <li class="page-item" th:classappend="${ph.pageNo == i ? 'active' : ''}">
+                        <a class="page-link" th:href="@{/board/list(pageNo=${i})}">[[${i}]]</a>
+                    </li>
+                </th:block>
+
+                <li class="page-item" th:classappend="${ph.next eq false ? 'disabled' : ''}">
+                    <a class="page-link" th:href="@{/board/list(pageNo=${ph.endPage}+1)}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
 
     </div>
 </div>

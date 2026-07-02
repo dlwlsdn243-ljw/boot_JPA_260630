@@ -1,4 +1,4 @@
-console.log("test")
+console.log("boardModify.js in")
 
 // 수정버튼을 클릭하면 title, content만 readOnly 풀기
 document.getElementById("modBtn").addEventListener("click", () => {

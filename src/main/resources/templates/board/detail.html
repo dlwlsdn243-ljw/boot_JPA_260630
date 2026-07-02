@@ -35,6 +35,32 @@
             <button type="button" id="listBtn" class="btn btn-primary" >list</button>
         </a>
 
+        <!--댓글 라인-->
+        <div id="comment">
+            <!--댓글 입력-->
+            <div class="input-group my-3">
+                <span class="input-group-text" id="cmtWriter">writer</span>
+                <input type="text" class="form-control" id="cmtText" placeholder="comment..." aria-label="Username" aria-describedby="basic-addon1">
+                <button type="button" id="cmtAddBtn" class="btn btn-primary">등록</button>
+            </div>
+
+            <!--댓글 출력-->
+            <ul class="list-group list-group-flush" id="cmtListArea">
+                <li class="list-group-item" >
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bole">writer</div>
+                        content가 많아지면 글자는 어떻게 될까요???
+                    </div>
+                    <span class="badge rounded-pill text-bg-primary">등록일</span>
+                    <button type="button" class="btn btn-outline-warning btn-sm">수정</button>
+                    <button type="button" class="btn btn-outline-danger btn-sm">취소</button>
+                </li>
+            </ul>
+
+        </div>
+
+
         <script th:src="@{/js/boardModify.js}"></script>
+        <script th:src="@{/js/boardComment.js}"></script>
     </form>
 </div>

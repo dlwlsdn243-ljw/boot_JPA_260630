@@ -2,6 +2,7 @@ package com.example.boot.service;
 
 import com.example.boot.dto.BoardDTO;
 import com.example.boot.entity.Board;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -44,6 +45,7 @@ public interface BoardService {
 
     Long insert(BoardDTO boardDTO);
 
+    // 페이징 없는 리스트
     List<BoardDTO> getList();
 
     BoardDTO getDetail(Long bno);
@@ -51,4 +53,7 @@ public interface BoardService {
     void update(BoardDTO boardDTO);
 
     void remove(Long bno);
+
+
+    Page<BoardDTO> getList(int pageNo);
 }

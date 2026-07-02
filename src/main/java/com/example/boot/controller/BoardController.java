@@ -2,9 +2,11 @@ package com.example.boot.controller;
 
 
 import com.example.boot.dto.BoardDTO;
+import com.example.boot.handler.PagingHandler;
 import com.example.boot.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,10 +40,28 @@ public class BoardController {
         return "redirect:/board/list";
     }
 
-    @GetMapping("/list")
+/*    @GetMapping("/list")
     public void list(Model model){
+        // 페이징이 없는 리스트
         List<BoardDTO> list = boardService.getList();
         model.addAttribute("list",list);
+    }*/
+
+    @GetMapping("/list")
+    public void list(Model model,
+                     @RequestParam(name = "pageNo", required = false, defaultValue = "1") int pageNo){
+        Page<BoardDTO> list = boardService.getList(pageNo);
+        model.addAttribute("list", list);
+/*        log.info("전체 게시글 수 >> {}", list.getTotalElements());
+        log.info("진짜 마지막 페이지 >> {}", list.getTotalPages());
+        log.info("이전 버튼의 필요 여부 >> {}", list.hasPrevious());
+        log.info("다음 버튼의 필요 여부 >> {}", list.hasNext());*/
+
+        PagingHandler ph = new PagingHandler(list,pageNo);
+        model.addAttribute("ph", ph);
+        log.info("ph >> {}", ph);
+
+
     }
 
     @GetMapping("/detail")
