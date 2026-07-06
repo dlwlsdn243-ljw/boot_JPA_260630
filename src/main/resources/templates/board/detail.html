@@ -38,6 +38,9 @@
         <!--댓글 라인-->
         <div id="comment">
             <!--댓글 입력-->
+            <div class="mt-4">
+                <h5>댓글</h5>
+            </div>
             <div class="input-group my-3">
                 <span class="input-group-text" id="cmtWriter">writer</span>
                 <input type="text" class="form-control" id="cmtText" placeholder="comment..." aria-label="Username" aria-describedby="basic-addon1">
@@ -53,14 +56,48 @@
                     </div>
                     <span class="badge rounded-pill text-bg-primary">등록일</span>
                     <button type="button" class="btn btn-outline-warning btn-sm">수정</button>
-                    <button type="button" class="btn btn-outline-danger btn-sm">취소</button>
+                    <button type="button" class="btn btn-outline-danger btn-sm">삭제</button>
                 </li>
             </ul>
 
+            <!--moreBtn-->
+            <div class="input-group my-3">
+                <button type="button" id="moreBtn"
+                        data-page="1" class="btn btn-outline-info btn-sm"
+                        style="visibility:hidden">
+                    more+
+                </button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="commentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="cmtWriterMod">no.cno Writer</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <input type="text" class="form-control" id="cmtTextMod">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" id="cmtModBtn">Update</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
         </div>
 
 
+        <script th:inline="javascript">
+            const bno = [[${board.bno}]];
+        </script>
+
         <script th:src="@{/js/boardModify.js}"></script>
         <script th:src="@{/js/boardComment.js}"></script>
+        <script>
+            spreadCommentList(bno)
+        </script>
+
     </form>
 </div>
