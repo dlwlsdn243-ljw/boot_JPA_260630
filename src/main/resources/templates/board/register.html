@@ -7,7 +7,7 @@
 <div layout:fragment="content" class="container-md">
     <!--여기가 main-->
     <h1>Board Register Page</h1>
-    <form action="/board/register" method="post" class="my-5">
+    <form action="/board/register" method="post" class="my-5" enctype="multipart/form-data">
         <div class="mb-3">
             <label for="t" class="form-label">Title</label>
             <input type="text" class="form-control" name="title" id="t" placeholder="title...">
@@ -20,7 +20,20 @@
             <label for="c" class="form-label">Contents</label>
             <textarea class="form-control" name="content" id="c" rows="3" cols="10"></textarea>
         </div>
-        <button type="submit" class="btn btn-primary" >register</button>
+
+        <!-- file upload 추가 -->
+        <div class="mb-3">
+            <!--multiple 하나의 input에 여러개의 파일 업로드-->
+            <input type="file" class="form-control" id="file"
+                   name="files" multiple style="display: none">
+            <button type="button" id="trigger" class="btn btn-outline-dark">파일 업로드</button>
+        </div>
+        <!--file print-->
+        <div class="mb-3" id="fileZone"></div>
+
+        <button type="submit" class="btn btn-primary" id="regBtn">등록</button>
+
+        <script th:src="@{/js/boardRegister.js}"></script>
     </form>
 
 </div>

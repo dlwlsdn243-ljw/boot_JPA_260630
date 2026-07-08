@@ -66,6 +66,22 @@ public class CommentServieImpl implements CommentService{
         return list.map(this::convertEntityToDto);
     }
 
+    // save() => id가 없으면 insert / id가 있으면 update
+    // EntityNotFoundException where에서 검색한 조건의 값이 없을 경우 발생
+    // 정보 유실 가능성이 커짐
+    // dirty checking (변동감지)
+    // findById(cno) 먼저 조회 => 영속상태를 만든 후 수정 => save
+
+
+    @Transactional
+    @Override
+    public long modify(CommentDTO commentDTO) {
+        Comment comment = commentRepository.findById(commentDTO.getCno())
+                .orElseThrow(()->new EntityNotFoundException("해당 댓글을 찾을 수 없습니다."));
+        comment.setContent(commentDTO.getContent());
+        return comment.getCno();
+    }
+
     @Transactional
     @Override
     public void remove(long cno) {

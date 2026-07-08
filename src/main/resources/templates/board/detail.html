@@ -4,100 +4,132 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/layout}"
 >
-<div layout:fragment="content" class="container-md">
-    <!--여기가 main-->
-    <h1>[ NO [[${board.bno}]] ] Detail Page</h1>
-    <form action="/board/update" method="post" class="my-5" id="modForm">
+<div layout:fragment="content" class="container-md my-5" th:with="board = ${boardFile.boardDTO}, fileList = ${boardFile.fileList}">
+    <!--  여기가 main  -->
+    <h1>[ no.[[${board.bno}]] ] Detail Page</h1>
+
+    <form action="/board/update" method="post" enctype="multipart/form-data" class="my-5" id="modForm">
         <input type="hidden" name="bno" th:value="${board.bno}">
         <div class="mb-3">
             <label for="t" class="form-label">Title</label>
-            <input type="text" class="form-control" readonly name="title" id="t" th:value="${board.title}">
+            <input type="text" class="form-control" name="title" id="t" readonly th:value="${board.title}">
         </div>
         <div class="mb-3">
             <label for="w" class="form-label">Writer</label>
-            <input type="text" class="form-control" readonly name="writer" id="w" th:value="${board.writer}">
+            <input type="text" class="form-control" id="w" name="writer" readonly th:value="${board.writer}">
         </div>
         <div class="mb-3">
             <label for="r" class="form-label">regDate</label>
-            <input type="text" class="form-control"  readonly  id="r" th:value="${#temporals.format(board.regDate,'yyyy-MM-dd HH:mm:ss')}">
+            <input type="text" th:value="${#temporals.format(board.regDate,'yyyy-MM-dd HH:mm:ss')}" readonly class="form-control" id="r" >
         </div>
         <div class="mb-3">
-            <label for="c" class="form-label">Contents</label>
-            <textarea class="form-control" name="content"  id="c" readonly rows="10" cols="10" th:text="${board.content}"></textarea>
+            <label for="c" class="form-label">Content</label>
+            <textarea class="form-control" id="c" name="content" readonly rows="10" cols="30">[[${board.content}]]</textarea>
         </div>
-        <a href="#" class="text-decoration-none">
-            <button type="button" id="modBtn" class="btn btn-warning" >modify</button>
-        </a>
-        <a th:href="@{/board/remove(bno=${board.bno})}" class="text-decoration-none">
-            <button type="button"  id="delBtn" class="btn btn-secondary" >delete</button>
-        </a>
-        <a th:href="@{/board/list}" class="text-decoration-none">
-            <button type="button" id="listBtn" class="btn btn-primary" >list</button>
-        </a>
-
-        <!--댓글 라인-->
-        <div id="comment">
-            <!--댓글 입력-->
-            <div class="mt-4">
-                <h5>댓글</h5>
-            </div>
-            <div class="input-group my-3">
-                <span class="input-group-text" id="cmtWriter">writer</span>
-                <input type="text" class="form-control" id="cmtText" placeholder="comment..." aria-label="Username" aria-describedby="basic-addon1">
-                <button type="button" id="cmtAddBtn" class="btn btn-primary">등록</button>
-            </div>
-
-            <!--댓글 출력-->
-            <ul class="list-group list-group-flush" id="cmtListArea">
-                <li class="list-group-item" >
-                    <div class="ms-2 me-auto">
-                        <div class="fw-bole">writer</div>
-                        content가 많아지면 글자는 어떻게 될까요???
+        <!--file print-->
+        <div class="mb-3">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item" th:each="fileDTO:${fileList}">
+                    <div class="mb-3" th:if="${fileDTO.fileType eq 1}">
+                        <!--그림 파일일 경우-->
+                        <img th:src="@{|/upload/${fileDTO.saveDir}/${fileDTO.uuid}_${fileDTO.fileName}|}" width="300px" alt="그림없음">
                     </div>
-                    <span class="badge rounded-pill text-bg-primary">등록일</span>
-                    <button type="button" class="btn btn-outline-warning btn-sm">수정</button>
-                    <button type="button" class="btn btn-outline-danger btn-sm">삭제</button>
+                    <div class="mb-3" th:unless="${fileDTO.fileType eq 1}">
+                        <!--그 외 파일일 경우 다운로드 가능하게... -->
+                        <a th:href="@{|/upload/${fileDTO.saveDir}/${fileDTO.uuid}_${fileDTO.fileName}|}" th:download="${fileDTO.fileName}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-file-earmark-arrow-down-fill" viewBox="0 0 16 16">
+                                <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0"/>
+                            </svg>
+                        </a>
+                    </div>
+                    <div class="mb-3 fw-bold">[[${fileDTO.fileName}]]</div>
+                    <span class="badge rounded-pill text-bg-warning">[[${fileDTO.regDate}]] / [[${fileDTO.fileSize}]]bytes</span>
+                    <button type="button" class="btn btn-outline-danger file-x" style="visibility: hidden" th:data-uuid="${fileDTO.uuid}">x</button>
                 </li>
             </ul>
-
-            <!--moreBtn-->
-            <div class="input-group my-3">
-                <button type="button" id="moreBtn"
-                        data-page="1" class="btn btn-outline-info btn-sm"
-                        style="visibility:hidden">
-                    more+
-                </button>
-
-                <!-- Modal -->
-                <div class="modal fade" id="commentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="cmtWriterMod">no.cno Writer</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <input type="text" class="form-control" id="cmtTextMod">
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary" id="cmtModBtn">Update</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
         </div>
 
-
-        <script th:inline="javascript">
-            const bno = [[${board.bno}]];
-        </script>
-
-        <script th:src="@{/js/boardModify.js}"></script>
-        <script th:src="@{/js/boardComment.js}"></script>
-        <script>
-            spreadCommentList(bno)
-        </script>
-
+        <!-- file upload 추가 -->
+        <div class="mb-3">
+            <!--multiple 하나의 input에 여러개의 파일 업로드-->
+            <input type="file" class="form-control" id="file" name="files" multiple style="display: none">
+            <button type="button" style="display: none" id="trigger" class="btn btn-outline-dark">File Upload</button>
+        </div>
+        <!--file print-->
+        <div class="mb-3" id="fileZone"></div>
     </form>
+
+    <a th:href="@{#}" class="text-decoration-none">
+        <button type="button" id="modBtn" class="btn btn-warning">modify</button>
+    </a>
+    <a th:href="@{/board/remove(bno=${board.bno})}" class="text-decoration-none">
+        <button type="button" id="delBtn" class="btn btn-danger">delete</button>
+    </a>
+    <a th:href="@{/board/list}" class="text-decoration-none">
+        <button type="button" id="listBtn" class="btn btn-primary">list</button>
+    </a>
+
+    <!--댓글 라인-->
+    <div id="comment">
+        <!--댓글입력-->
+        <div class="input-group my-5">
+            <span class="input-group-text" id="cmtWriter">Tester</span>
+            <input type="text" class="form-control" id="cmtText" placeholder="comment..." aria-label="Username" aria-describedby="basic-addon1">
+            <button type="button" id="cmtAddBtn" class="btn btn-primary">post</button>
+        </div>
+
+        <!--댓글출력-->
+        <ul class="list-group list-group-flush" id="cmtListArea">
+            <li class="list-group-item shadow-sm rounded-2">
+                <div class="ms-2 me-auto">
+                    <div class="fw-bold">writer</div>
+                    content가 많아지면 글자는 어떻게 될까요???
+                </div>
+                <span class="badge rounded-pill text-bg-primary">regDate</span>
+                <div class="d-flex justify-content-end gap-2">
+                    <button type="button" class="btn btn-outline-warning btn-sm">%</button>
+                    <button type="button" class="btn btn-outline-danger btn-sm">X</button>
+                </div>
+            </li>
+
+        </ul>
+        <!--moreBtn-->
+        <div class="input-group my-5">
+            <button type="button" id="moreBtn"
+                    data-page="1" class="btn btn-outline-info btn-sm"
+                    style="visibility: hidden"
+            >more+</button>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="commentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="cmtWriterMod">no.cno Writer</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" class="form-control" id="cmtTextMod">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="cmtModBtn">Update</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script th:inline="javascript">
+        const bno = [[${board.bno}]];
+    </script>
+
+    <script th:src="@{/js/boardModify.js}"></script>
+    <script th:src="@{/js/boardComment.js}"></script>
+    <script th:src="@{/js/boardRegister.js}"></script>
+    <script>
+        spreadCommentList(bno);
+    </script>
 </div>

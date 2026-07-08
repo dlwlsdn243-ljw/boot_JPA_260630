@@ -19,6 +19,9 @@ public class PagingHandler {
 
     private List<BoardDTO> list;
 
+    private String type;
+    private String keyword;
+
     public PagingHandler(Page<BoardDTO> list, int pageNo){
         this.list = list.getContent(); // page에서 list만 가져올 때
         this.pageNo = pageNo;
@@ -35,5 +38,11 @@ public class PagingHandler {
         // 일단 test
         this.prev = startPage > 1;
         this.next = endPage < totalPage;
+    }
+
+    public PagingHandler(Page<BoardDTO> list, int pageNo, String type, String keyword){
+        this(list, pageNo);
+        this.type = type;
+        this.keyword = keyword;
     }
 }
