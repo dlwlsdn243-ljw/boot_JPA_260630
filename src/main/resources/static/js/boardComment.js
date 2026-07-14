@@ -52,8 +52,8 @@ function spreadCommentList(bno, page=1) {
                 li+=`<span class="badge rounded-pill text-bg-primary align-content-center">${comment.regDate}</span>`;
                 li+=`<span class="badge rounded-pill text-bg-warning align-content-center">${comment.modDate}</span>`;
                 //li+=`<span class="badge rounded-pill text-bg-primary">${comment.regDate.substring(0,10)} ${comment.regDate.substring(comment.regDate.indexOf("T")+1, comment.regDate.lastIndexOf("."))}</span>`;
-                li+=`<button type="button" class="btn btn-outline-warning btn-sm mod" data-bs-toggle="modal" data-bs-target="#commentModal">%</button>`;
-                li+=`<button type="button" class="btn btn-outline-danger btn-sm del">X</button>`;
+                li+=`<button type="button" class="btn btn-outline-warning btn-sm mod" data-bs-toggle="modal" data-bs-target="#commentModal">수정</button>`;
+                li+=`<button type="button" class="btn btn-outline-danger btn-sm del">삭제</button>`;
                 li+=`</div>`;
                 li+=`</li>`;
             }

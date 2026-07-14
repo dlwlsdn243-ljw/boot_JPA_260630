@@ -11,19 +11,19 @@
     <form action="/board/update" method="post" enctype="multipart/form-data" class="my-5" id="modForm">
         <input type="hidden" name="bno" th:value="${board.bno}">
         <div class="mb-3">
-            <label for="t" class="form-label">Title</label>
+            <label for="t" class="form-label">제목</label>
             <input type="text" class="form-control" name="title" id="t" readonly th:value="${board.title}">
         </div>
         <div class="mb-3">
-            <label for="w" class="form-label">Writer</label>
+            <label for="w" class="form-label">작성자</label>
             <input type="text" class="form-control" id="w" name="writer" readonly th:value="${board.writer}">
         </div>
         <div class="mb-3">
-            <label for="r" class="form-label">regDate</label>
+            <label for="r" class="form-label">작성일</label>
             <input type="text" th:value="${#temporals.format(board.regDate,'yyyy-MM-dd HH:mm:ss')}" readonly class="form-control" id="r" >
         </div>
         <div class="mb-3">
-            <label for="c" class="form-label">Content</label>
+            <label for="c" class="form-label">내용</label>
             <textarea class="form-control" id="c" name="content" readonly rows="10" cols="30">[[${board.content}]]</textarea>
         </div>
         <!--file print-->
@@ -60,13 +60,13 @@
     </form>
 
     <a th:href="@{#}" class="text-decoration-none">
-        <button type="button" id="modBtn" class="btn btn-warning">modify</button>
+        <button type="button" id="modBtn" class="btn btn-warning">수정</button>
     </a>
     <a th:href="@{/board/remove(bno=${board.bno})}" class="text-decoration-none">
-        <button type="button" id="delBtn" class="btn btn-danger">delete</button>
+        <button type="button" id="delBtn" class="btn btn-danger">삭제</button>
     </a>
     <a th:href="@{/board/list}" class="text-decoration-none">
-        <button type="button" id="listBtn" class="btn btn-primary">list</button>
+        <button type="button" id="listBtn" class="btn btn-primary">리스트</button>
     </a>
 
     <!--댓글 라인-->
@@ -75,7 +75,7 @@
         <div class="input-group my-5">
             <span class="input-group-text" id="cmtWriter">Tester</span>
             <input type="text" class="form-control" id="cmtText" placeholder="comment..." aria-label="Username" aria-describedby="basic-addon1">
-            <button type="button" id="cmtAddBtn" class="btn btn-primary">post</button>
+            <button type="button" id="cmtAddBtn" class="btn btn-primary">등록</button>
         </div>
 
         <!--댓글출력-->
@@ -119,7 +119,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 
     <script th:inline="javascript">

@@ -69,10 +69,11 @@ public class BoardController {
     public void list(Model model,
                      @RequestParam(name = "pageNo", required = false,
                              defaultValue = "1") int pageNo,
-                     @RequestParam(name = "type", required = false)String type,
-                     @RequestParam(name = "keyword", required = false)String keyword){
+                     @RequestParam(name = "type", required = false) String type,
+                     @RequestParam(name = "keyword", required = false) String keyword){
         log.info("type >> {}", type);
         log.info("keyword >> {}", keyword);
+        // page + search
         Page<BoardDTO> list = boardService.getList(pageNo, type, keyword);
 //        model.addAttribute("list",list);
 //        log.info("getTotalElements >> {}", list.getTotalElements()); // 전체 게시글 수
@@ -112,30 +113,30 @@ public class BoardController {
         return "redirect:/board/list";
     }
 
-/*    @DeleteMapping("/file/{uuid}")
-    public ResponseEntity<String> fileRemove(@PathVariable("uuid")String uuid){
-        // 비동기
-        log.info("uuid >>> {}", uuid);
-        // 폴더에 있는 파일을 먼저 삭제 후 DB의 데이터를 삭제
-        FileDTO removeFile = boardService.getFile(uuid);
-        FileRemoveHandler fileRemoveHandler = new FileRemoveHandler();
-        boolean isDel = fileRemoveHandler.removeFile(removeFile);
-        long bno = 0;
-        if(isDel){
-            // db 삭제요청
-            bno = boardService.fileRemove(uuid);
-        }
-        return bno > 0 ? new ResponseEntity<String>("1", HttpStatus.OK) :
-                new ResponseEntity<String>("0", HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-*/
     // header나 다른 데이터의 상태를 많이 보내지 않을 때 간편하게 사용
     @ResponseBody
     @DeleteMapping("/file/{uuid}")
     public String fileRemove(@PathVariable("uuid")String uuid){
-        // responseBady만 보내기
+        // responseBody만 보내기
         long bno = boardService.fileRemove(uuid);
         return bno > 0 ? "1" : "0";
     }
+
+//    @DeleteMapping("/file/{uuid}")
+//    public ResponseEntity<String> fileRemove(@PathVariable("uuid")String uuid){
+//        // 비동기
+//        log.info("uuid >>> {}", uuid);
+//        // 폴더에 있는 파일을 먼저 삭제 후 DB의 데이터를 삭제
+//        FileDTO removeFile = boardService.getFile(uuid);
+//        FileRemoveHandler fileRemoveHandler = new FileRemoveHandler();
+//        boolean isDel = fileRemoveHandler.removeFile(removeFile);
+//        long bno = 0;
+//        if(isDel){
+//            // db 삭제요청
+//            bno = boardService.fileRemove(uuid);
+//        }
+//        return bno > 0 ? new ResponseEntity<String>("1", HttpStatus.OK) :
+//            new ResponseEntity<String>("0", HttpStatus.INTERNAL_SERVER_ERROR);
+//    }
 
 }

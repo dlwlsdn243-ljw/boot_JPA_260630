@@ -103,12 +103,6 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public Page<BoardDTO> getList(int pageNo, String type, String keyword) {
-        // page + search
-        return null;
-    }
-
-    @Override
     public Long insert(BoardDTO boardDTO) {
         // CRUD에 해당하는 메서드 제공
         // save() : 저장
@@ -200,6 +194,16 @@ public class BoardServiceImpl implements BoardService{
         // Page<Board>  =>  Page<BoardDTO> 변환
         Page<BoardDTO> boardDTOPage = pageList.map(this :: convertEntityToDto);
         return boardDTOPage;
+    }
+
+    @Override
+    public Page<BoardDTO> getList(int pageNo, String type, String keyword) {
+        // page + search
+        // pageable, type, keyword => Page<Board>
+        Pageable pageable = PageRequest.of(pageNo-1, 10,
+                Sort.by("bno").descending());
+        Page<Board> pageList = boardRepository.searchBoard(type, keyword, pageable);
+        return pageList.map(this :: convertEntityToDto);
     }
 
 
