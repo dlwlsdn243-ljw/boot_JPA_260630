@@ -13,7 +13,7 @@ document.getElementById('modBtn').addEventListener('click',()=>{
     regBtn.setAttribute('type','submit');
     regBtn.setAttribute('id','regBtn');
     regBtn.classList.add('btn', 'btn-success');
-    regBtn.innerText="update";
+    regBtn.innerText="수정";
 
     // form 태그의 가장 마지막 요소로 추가
     document.getElementById('modForm').appendChild(regBtn);
@@ -49,9 +49,11 @@ async function fileRemoveToServer(uuid){
     try {
         const url = "/board/file/"+uuid;
         const config = {
-            method: 'delete'
+            method: 'delete',
+            headers:{
+                [csrfHeader] : csrfToken
+            }
         }
-
         const response = await fetch(url, config);
         const result = await response.text();
         return result;

@@ -14,4 +14,15 @@
              alt="">
     </div>
 
+    <script th:inline = "javascript">
+        const modMsg = [[${modMsg}]];
+        const delMsg = [[${delMsg}]];
+        if (modMsg === "ok"){
+            alert("회원정보가 수정되었습니다. 다시 로그인 해주세요");
+        }
+        if(delMsg==='ok'){
+            alert("회원 탈퇴완료!!");
+        }
+
+    </script>
 </div>

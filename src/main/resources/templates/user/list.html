@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}"
+>
+<div layout:fragment="content" class="container-md my-5">
+    <!--  여기가 main  -->
+    <h1>User List (ADMIN)</h1>
+    <div class="row m-2">
+        <div class="col" th:each="user:${userList}">
+            <div class="card" style="width: 18rem;">
+                <img src="/image/image6.jpeg" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">[[${user.nickName}]]</h5>
+                    <p class="card-text">[[${user.email}]]</p>
+                    <div class="mb-3">
+                        <span class="badge text-bg-warning" th:each="authList: ${user.authList}">[[${authList.role}]] </span>
+                    </div>
+                    <a th:href="@{/user/admin(email=${user.email})}"><button type="button" class="btn btn-outline-danger">관리자 관환</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

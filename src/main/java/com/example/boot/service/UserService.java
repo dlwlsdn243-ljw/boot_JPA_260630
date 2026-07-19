@@ -1,0 +1,61 @@
+package com.example.boot.service;
+
+import com.example.boot.dto.AuthUserDTO;
+import com.example.boot.dto.UserDTO;
+import com.example.boot.entity.AuthUser;
+import com.example.boot.entity.User;
+
+import java.util.List;
+
+public interface UserService {
+
+    // convert
+    // DTO -> entity
+    default User convertDtoToEntity(UserDTO userDTO){
+        return User.builder()
+                .email(userDTO.getEmail())
+                .pwd(userDTO.getPwd())
+                .nickName(userDTO.getNickName())
+                .build();
+    }
+
+    // Entity -> DTO
+    default UserDTO convertEntityToDto(User user){
+        return UserDTO.builder()
+                .email(user.getEmail())
+                .nickName(user.getNickName())
+                .lastLogin(user.getLastLogin())
+                .regDate(user.getRegDate())
+                .modDate(user.getModDate())
+                .authList(user.getAuthList() == null ?  null :
+                        user.getAuthList().stream()
+                                .map(this :: convertAuthEntityToAuthDto)
+                                .toList())
+                .build();
+    }
+
+    // auth authDTO변환
+    default AuthUserDTO convertAuthEntityToAuthDto(AuthUser authUser) {
+        return AuthUserDTO.builder()
+                .id(authUser.getId())
+                .email(authUser.getUser().getEmail())
+                .role(authUser.getAuth().getRoleName())
+                .build();
+    }
+
+    String insert(UserDTO userDTO);
+
+    void lastloginUpdate(String name);
+
+    void grantAdminRole(String adminEmail);
+
+    UserDTO getDetail(String name);
+
+    String modify(UserDTO userDTO);
+
+    List<UserDTO> getList();
+
+    String remove(String name);
+
+    boolean emailCheck(String email);
+}
